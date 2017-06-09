@@ -1,0 +1,47 @@
+<div class="col-md-6 push-md-1 progress-indication">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="progress-container positive-block">
+				<div class="filler"></div>
+				<span class="fa fa-twitter icon"></span>
+				<div class="progress-detail">
+					<span class="progress-number">
+						 0
+						<%#=  @feeds.present? ? @feeds[:positive][:total_percent] : '' %>%
+					</span>
+					<span class="progress-text">
+						Positive
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="progress-container neutral-block">
+				<div class="filler"></div>
+				<span class="fa fa-twitter icon"></span>
+				<div class="progress-detail">
+					<span class="progress-number">
+						<%#=  @feeds.present? ? @feeds[:neutral][:total_percent] : '' %>%
+					</span>
+					<span class="progress-text">
+						Neutral
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="progress-container negative-block">
+				<div class="filler"></div>
+				<span class="fa fa-twitter icon"></span>
+				<div class="progress-detail">
+					<span class="progress-number">
+						 <%#=  @feeds.present? ?  @feeds[:negative][:total_percent] : '' %>%
+					</span>
+					<span class="progress-text">
+						Negative
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+var tabId = '<%=  params[:status]=="in_progress" ? "#inprogress-tweets" : "#closed-tweets"%>'
+
+console.log(tabId);
+
+$(tabId).html("<%= raw escape_javascript(render :partial => 'tweets',:locals => {:feeds => @feeds }) %>");
+	
+	
+hideActionIndicator();

@@ -1,0 +1,450 @@
+<style>
+
+.loader{
+  background: rgba(51, 183, 198, 0.5) url("<%= asset_path("full_icon.gif") %>")  center center / 80px no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 4;
+}
+
+/*  .loader{
+    background:  url("<%= asset_path("pie.gif") %>") ;
+    height: 120px;
+    width: 120px;
+    position:absolute;
+    left: 45%;
+    top: 45%;
+    z-index: 1;
+  }*/
+
+  .hide{
+    display:none;
+  }
+
+  .no-results{
+    color:#b4bfc2;
+  }
+	
+
+
+</style>
+<%#= @user_profile.inspect %>
+<%#= current_user.inspect %>
+<div class="container page-wrapper">
+  <div class="row user-bio-block">
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-xs-6 col-md-4">
+          <%= image_tag @user_profile["profile_image_url"].gsub("_normal", ""), :class => "thumbnail rounded-circle float-xs-left profile-thumb"  %>
+        </div>
+        <div class="col-xs-6 col-md-8">
+          <div class="row">
+            <div class="col-xs-12 col-md-12 ">
+              <div class="profile-tweet-details-block">
+                <h1 class="profile-user-name"><%= @user_profile["name"]  %></h1>
+                <span class="tweet-to">
+                  @<%= @user_profile["screen_name"]  %>
+                </span>
+
+                <%= render :partial => "compare" %>
+
+                <div class="profile-user-designation">
+                  <%= auto_link(@user_profile["description"], :html => { :target => '_blank' })  %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ul class="row fan-stats-block">
+            <l1 class="col-xs-4 column-grid fan-following">
+              <div class="label">Tweets</div>
+              <div class="numbers"><%= number_to_human(@user_profile["statuses_count"]) %></div>
+            </l1>
+            <l1 class="col-xs-4 column-grid fan-following">
+              <div class="label">Following</div>
+              <div class="numbers"><%= number_to_human(@user_profile["friends_count"]) %></div>
+            </l1>
+            <l1 class="col-xs-4 column-grid fan-following">
+              <div class="label">Followers</div>
+              <div class="numbers"><%= number_to_human(@user_profile["followers_count"]) %></div>
+            </l1>
+          </ul>
+        </div>
+      </div>
+
+
+    </div>
+				
+		<div id="aggregation_block">
+			<%= render :partial => "aggregation" %>
+		</div>
+				
+		
+				
+	</div>
+		
+
+		
+			
+	<div class="row">
+		<div class="col-md-6 tweet-handler-block left-tweet-panel">
+			
+			<div class="container tweet-handler-header-block">
+				<div class="row">
+					
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist" id="tweet-handler-block-tabs">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#latest-tweets" role="tab" id="latest_tweets_tab">Latest Tweets (<span>0</span>)</a>
+						</li>
+						<li class="nav-item">
+							
+		          <a class="nav-link" data-toggle="tab"  href="#inprogress-tweets" role="tab" id="inprogress_tweets_tab">In progress (<span>0</span>)</a>
+							
+							<%#= link_to "In progress", get_selected_tweets_path(:status=>'in_progress',:format=>'js', :uid=>@user_profile["id"]), :class=>"nav-link", "data-toggle"=>"tab", :remote=>true, :role=>"tab", :onclick=>'activateTab("#inprogress-tweets")'%>
+							
+						</li>
+						<li class="nav-item">
+							
+		          <a class="nav-link" data-toggle="tab"  href="#closed-tweets" role="tab" id="closed_tweets_tab">Closed (<span>0</span>)</a>
+							
+							<%#= link_to "Closed", get_selected_tweets_path(:status=>'closed',:format=>'js', :uid=>@user_profile["id"]), :class=>"nav-link", "data-toggle"=>"tab", :remote=>true, :role=>"tab", :onclick=>'activateTab("#closed-tweets")'%>
+							
+						</li>
+					</ul>
+
+			
+				</div>
+
+				<!-- Filter content -->
+				<div class="row filter-tweets-block">
+					<div class="col-md-6 col-lg-6 search-block">
+						<form action="" class="top-search-form" style="display:none">
+							<input type="text" class="input-field" placeholder="Search">
+							<button type="submit" class="search-submit"> </button>
+						</form>
+					</div>
+				  <div class="col-md-6 check-filter-block text-md-right">
+						<form class="form-inline">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input sentiment" type="checkbox" value="neutral"> Neutral
+								</label>
+							</div>
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input sentiment" type="checkbox" value="positive" checked> Positive
+								</label>
+							</div>
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input sentiment" type="checkbox" value="negative" checked> Negative
+								</label>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div class="container tab-pane active" id="latest-tweets" role="tabpanel">
+         
+				</div>
+				
+				<div class="tab-pane" id="inprogress-tweets" role="tabpanel">
+				</div>
+				
+				<div class="tab-pane" id="closed-tweets" role="tabpanel">
+				</div>
+				
+			</div>
+		</div>
+
+    <div class="col-md-6 tweet-handler-block right-detailed-panel empty-panel" >
+      <div class="emptyplace-text text-xs-center">
+				
+				<% if current_user.blank? %>
+				  You can see work progress/action taken by @<%= @user_profile["screen_name"]  %> on a particular tweet by clicking on view progress or history link from the left.
+				<% else %>
+					Please click on relevant link from left to see work progress on that tweet.
+				<% end %>
+      </div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist" id="tweet-handler-block-tabs">
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#work-progress" role="tab">Work progress</a>
+        </li>
+      </ul>
+
+
+      <div class="tab-content">
+        <div class="container tab-pane" id="tweet-timeline" role="tabpanel">
+          <div class="comment-block">
+            <form action="" class="comment-form">
+              <div class="form-group">
+                <textarea class="form-control textarea-field" name="comment-area" id="comment-area" cols="30" rows="3" placeholder="Your Comment"></textarea>
+              </div>
+              <button class="comment-submit" type="submit">Reply</button>
+            </form>
+          </div>
+          <div class="row tweet-list">
+            <div class="col-md-12 tweet-item">
+              <div class="row">
+                <div class="col-xs-6 col-md-4 col-lg-2">
+                  <a href="#" class="thumbnail">
+                    <%= image_tag "default_image.jpeg", :class => "rounded-circle float-xs-left profile-thumb"  %>
+                  </a>
+                </div>
+                <div class="col-xs-6 col-md-8 col-lg-10 tweet-inner-content">
+                  <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                      <div class="profile-tweet-details-block negative-tweets">
+                        <h1 class="profile-user-name">Narender Modi
+                          <span class="tweet-to">
+                            @jrjSng
+                          </span>
+                          <span class="tweet-time">7h</span>
+                        </h1>
+                        <div class="profile-user-content">
+                          Sir, I would appreciate if you could intervene at the corruption
+                          in horticulture department of PWD circle of Delhi Zone
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="row tweet-footer">
+                    <l1 class="col-xs-4 column-grid">
+                      <span class="fa fa-retweet"></span>
+                      <span class="numbers">232</span>
+                    </l1>
+                    <l1 class="col-xs-4 column-grid fan-following">
+                      <span class="fa fa-heart"></span>
+                      <span class="numbers">232</span>
+                    </l1>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="tweet-replies">
+              <div class="col-md-12 tweet-item">
+                <div class="row">
+                  <div class="col-xs-6 col-md-4 col-lg-2">
+                    <a href="#" class="thumbnail">
+                      <%= image_tag "default_image.jpeg", :class => "rounded-circle float-xs-left profile-thumb"  %>
+                    </a>
+                  </div>
+                  <div class="col-xs-6 col-md-8 col-lg-10 tweet-inner-content">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-12">
+                        <div class="profile-tweet-details-block negative-tweets">
+                          <h1 class="profile-user-name">Narender Modi
+                            <span class="tweet-to">
+                              @jrjSng
+                            </span>
+                            <span class="tweet-time">7h</span>
+                          </h1>
+                          <div class="profile-user-content">
+                            Sir, I would appreciate if you could intervene at the corruption
+                            in horticulture department of PWD circle of Delhi Zone
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="row tweet-footer">
+                      <l1 class="col-xs-4 column-grid">
+                        <span class="fa fa-retweet"></span>
+                        <span class="numbers">232</span>
+                      </l1>
+                      <l1 class="col-xs-4 column-grid fan-following">
+                        <span class="fa fa-heart"></span>
+                        <span class="numbers">232</span>
+                      </l1>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 tweet-item">
+                <div class="row">
+                  <div class="col-xs-6 col-md-4 col-lg-2">
+                    <a href="#" class="thumbnail">
+                      <%= image_tag "default_image.jpeg", :class => "rounded-circle float-xs-left profile-thumb"  %>
+                    </a>
+                  </div>
+                  <div class="col-xs-6 col-md-8 col-lg-10 tweet-inner-content">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-12">
+                        <div class="profile-tweet-details-block positive-tweets">
+                          <h1 class="profile-user-name">Narender Modi
+                            <span class="tweet-to">
+                              @jrjSng
+                            </span>
+                            <span class="tweet-time">7h</span>
+                          </h1>
+                          <div class="profile-user-content">
+                            Sir, I would appreciate if you could intervene at the corruption
+                            in horticulture department of PWD circle of Delhi Zone
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="row tweet-footer">
+                      <l1 class="col-xs-4 column-grid">
+                        <span class="fa fa-retweet"></span>
+                        <span class="numbers">232</span>
+                      </l1>
+                      <l1 class="col-xs-4 column-grid fan-following">
+                        <span class="fa fa-heart"></span>
+                        <span class="numbers">232</span>
+                      </l1>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 tweet-item">
+                <div class="row">
+                  <div class="col-xs-6 col-md-4 col-lg-2">
+                    <a href="#" class="thumbnail">
+                      
+                    </a>
+                  </div>
+                  <div class="col-xs-6 col-md-8 col-lg-10 tweet-inner-content">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-12">
+                        <div class="profile-tweet-details-block neutral-tweets">
+                          <h1 class="profile-user-name">Narender Modi
+                            <span class="tweet-to">
+                              @jrjSng
+                            </span>
+                            <span class="tweet-time">7h</span>
+                          </h1>
+                          <div class="profile-user-content">
+                            Sir, I would appreciate if you could intervene at the corruption
+                            in horticulture department of PWD circle of Delhi Zone
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="row tweet-footer">
+                      <l1 class="col-xs-4 column-grid">
+                        <span class="fa fa-retweet"></span>
+                        <span class="numbers">232</span>
+                      </l1>
+                      <l1 class="col-xs-4 column-grid fan-following">
+                        <span class="fa fa-heart"></span>
+                        <span class="numbers">232</span>
+                      </l1>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container tab-pane work-progress-block active" id="work-progress" role="tabpanel">
+        <%= render :partial => '/tweets/timeline', :locals => { :selected_tweets => Array.new } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="display:none;"><%= link_to "get_tweets", get_tweets_path(:handler=>"#{params[:handler]  || @user_profile["screen_name"]}", :format => :js, :uid => @user_profile["id"]), :remote =>true, :id => "get_tweets"  %></div>
+<script>
+
+  $(function() {
+// ...
+
+$.rails.ajax = function(options) {
+  if (!options.timeout) {
+    options.timeout = 300000;
+  }      
+  return $.ajax(options);
+};
+
+fetchTweets();
+});
+
+
+
+
+  function showActionIndicator(message){
+
+$('#loader_container').show();//.append(message);
+
+}
+
+function hideActionIndicator(){
+
+  $('#loader_container').hide();
+
+}
+
+
+function fetchTweets(){
+
+  var selectedSentiments = [];
+  $.each($('.sentiment:checked'), function() {
+    selectedSentiments.push( $(this).val() );
+  });   
+
+  showActionIndicator("Hang tight! We're crunching numbers for you.");
+
+  var getTweetsUrl = $("#get_tweets").attr("href")+"&sentiments="+selectedSentiments.join(",");
+  $("#get_tweets").attr("href", getTweetsUrl);
+  $("#get_tweets").click();
+
+}
+
+
+$('.sentiment').change(function(){
+
+  changedSentimentElem = $(this);
+  var sentiment = $(this).val();
+
+  if( $(this)[0].checked == true ){
+    $(".tweet-item.tweet-"+sentiment).removeClass("hide");
+  }else{
+    $(".tweet-item.tweet-"+sentiment).addClass("hide");
+  }
+
+  handleIfNoTweetsPresent();
+	
+	refreshTotalCount();
+});
+
+
+function handleIfNoTweetsPresent(){
+	
+	$.each(["#latest-tweets", "#inprogress-tweets", "#closed-tweets"], function( index, container ) {
+		
+	  if($(container).find(".tweet-list").children().not('.hide').length<=0){
+	    $(container).find(".no-results").show();
+	  }else{
+	    $(container).find(".no-results").hide();
+	  }
+		
+	});
+	
+
+}
+
+function refreshTotalCount(){
+	
+	
+	$.each(["#latest-tweets", "#inprogress-tweets", "#closed-tweets"], function( index, container ) {
+		
+		var count = $(container).find(".tweet-list").children().not('.hide').length;
+		
+	    $('a[href="' +container+ '"]').find("span").html(count);
+			
+	});
+	
+}
+
+
+
+
+</script>

@@ -1,0 +1,16 @@
+<%= form_tag comparison_path, :id => "compare", :method => :get do %>
+	Compare with @<%= text_field_tag "compared_to","", :class =>"input-field" %>   
+
+	<%= hidden_field_tag "positive" %>
+	<%= hidden_field_tag "negative" %>
+	<%= hidden_field_tag "neutral" %>
+	<%= hidden_field_tag "profile_image_url", @user_profile["profile_image_url"] %>
+	<%= hidden_field_tag "name", @user_profile["name"] %>
+	<%= hidden_field_tag "screen_name", @user_profile["screen_name"] %>
+	<%= hidden_field_tag "statuses_count", @user_profile["statuses_count"] %>
+	<%= hidden_field_tag "friends_count", @user_profile["friends_count"] %>
+	<%= hidden_field_tag "followers_count", @user_profile["followers_count"] %>
+	<%= hidden_field_tag "description", @user_profile["description"] %>
+    <input type="submit" class="at-redirect-btn" style="display:none" />
+<% end%>
+

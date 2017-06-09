@@ -1,0 +1,66 @@
+$("#latest-tweets").html("<%= raw escape_javascript(render :partial => 'tweets',:locals => {:feeds => @feeds }) %>");
+
+$("#aggregation_block").html("<%= raw escape_javascript(render :partial => 'aggregation',:locals => {:feeds => @feeds }) %>");
+	
+hideActionIndicator();
+	
+	
+var interval= setInterval(function(){
+		
+	$(".positive-block .filler").css({bottom :'-<%= 100-@feeds[:positive][:total_percent] %>%', transition: 'linear 2s bottom'});
+	$(".neutral-block .filler").css({bottom :'-<%= 100-@feeds[:neutral][:total_percent] %>%', transition: 'linear 2s bottom'});
+	$(".negative-block .filler").css({bottom :'-<%= 100-@feeds[:negative][:total_percent] %>%', transition: 'linear 2s bottom'});
+		
+}, 500);
+			
+			
+var positiveTotalPercent = <%= @feeds[:positive][:total_percent] %> ;
+var neutralTotalPercent = <%= @feeds[:neutral][:total_percent] %> ;
+var negativeTotalPercent = <%= @feeds[:negative][:total_percent] %> ;
+			
+			 
+$("#positive").val(positiveTotalPercent);
+$("#negative").val(neutralTotalPercent);
+$("#neutral").val(negativeTotalPercent);
+						 
+animatepercentage($(".positive-block .progress-number"), positiveTotalPercent)				 
+animatepercentage($(".negative-block .progress-number"), negativeTotalPercent)				 
+animatepercentage($(".neutral-block .progress-number"), neutralTotalPercent)				 
+			
+
+
+function commaSeparateNumber(val){
+	while (/(\d+)(\d{3})/.test(val.toString())){
+		val = val.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+	}
+	return val;
+}
+
+
+//to animate the number of the percentage
+function animatepercentage(elem, totalPercent){
+
+	var $el = $(elem);
+	$({someValue: 0}).animate({someValue: totalPercent}, {
+		duration: 3000,
+		easing:'swing', // can be anything
+		step: function() { // called on every step
+			// Update the element's text with rounded-up value:
+			$el.text(commaSeparateNumber(Math.round(this.someValue))+"%");
+		}
+	});
+	
+
+
+$("#inprogress-tweets").html("<%= raw escape_javascript(render :partial => 'tweets',:locals => {:feeds => @in_progress_tweets }) %>");
+$("#closed-tweets").html("<%= raw escape_javascript(render :partial => 'tweets',:locals => {:feeds => @closed_tweets }) %>");
+
+
+
+refreshTotalCount();
+<!-- $("#latest_tweets_tab span").html("<%= @feeds[:all].size rescue 0 %>")
+$("#inprogress_tweets_tab span").html("<%= @in_progress_tweets[:all].size rescue 0 %>")
+$("#closed_tweets_tab span").html("<%= @closed_tweets[:all].size rescue 0 %>")
+ -->
+
+}

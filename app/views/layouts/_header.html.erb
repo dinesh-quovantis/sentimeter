@@ -1,0 +1,27 @@
+<div class="header-block">
+	 <div class="container page-wrapper">
+		<div class="row">
+		  <div class="col-xs-12 col-md-12">
+		    <div class="col-md-3 logo">
+		    	<a href="<%= root_path %>"><%= image_tag "logo.png", class: "logo-img" %></a>
+		    </div>
+		    <div class="col-md-3 push-md-3 text-md-right">
+		    <% if params[:controller]=="sentiments" && params[:action]=="dashboard" %>
+		    	<%= form_tag dashboard_path, :id => "fetch", class:"form-block", :method => :get do %>
+			        <label class="label">&#64;</label>
+	 				<%= text_field_tag :handler, "", class:"input-field", placeholder:"politician, celebrity, government body.." %>
+			    <input type="submit" class="at-redirect-btn" style="display:none" />
+				<% end%>
+		    <% end %>
+		    </div>
+		    <div class="col-md-3 push-md-3 text-md-right form-block">
+		    <% if current_user.present? %>
+		    	Hey,  @<%= current_user.screen_name || "Twitterati" %> | 
+		    	<%= link_to "Logout",signout_path, :method => :delete, :style=>"color:#fff;" %>
+		    <% end %>
+		    </div>
+		  </div>
+		</div>
+	</div>
+</div>
+

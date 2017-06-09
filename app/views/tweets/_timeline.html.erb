@@ -1,0 +1,71 @@
+
+<div class="row tweet-list">
+<% selected_tweets.each do |selected_tweet|%>
+<% current_status = selected_tweet.current_status%>
+	<div class="col-md-12 tweet-item">
+		<div class="row">
+			<div class="col-xs-6 col-md-4 col-lg-2">
+			  <% if selected_tweet.image_url.present? %>
+				<%= image_tag selected_tweet.image_url.gsub("_normal", ""), :class => "rounded-circle float-xs-left profile-thumb"  %>
+			  <% end %>	
+			</div>
+			<div class="col-xs-6 col-md-8 col-lg-10 tweet-inner-content">
+				<div class="row">
+					<div class="col-xs-12 col-md-12">
+						<div class="profile-tweet-details-block ">
+							<h1 class="profile-user-name"><%= selected_tweet.name%>
+								<span class="tweet-to">
+									<%= selected_tweet.posted_by %>
+								</span>
+								<span class="tweet-time"><%= distance_of_time_in_words_to_now(selected_tweet.tweet_at) %></span>
+							</h1>
+							<div class="profile-user-content">
+								<%= selected_tweet.message %>
+							</div>
+						</div>
+					</div>
+				</div>
+				<%= link_to('CLOSE', mark_closed_tweet_path(selected_tweet, :format => :js), :id => "mark_closed", :remote => true, :class => "btn primary-btn hollow-btn follow-btn", :user_profile_id => user_profile_id) if current_status != CLOSED && current_user.present? && user_profile_id == current_user.uid.to_s%>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 comment-block">
+		<% if current_status != CLOSED && current_user.present? && user_profile_id == current_user.uid.to_s %>
+		<%= form_tag(comment_tweet_path(selected_tweet, :format => :js), method: "post", :remote => true, :class => "comment-form") do %> 
+	 		<div class="form-group">
+	 			<textarea class="form-control textarea-field" name="comment_text" id="comment_text" cols="30" rows="3" placeholder="Your Comment"></textarea>
+	 			<%= hidden_field_tag "user_profile_id", user_profile_id%>
+	 		</div>
+	 		<div class="action-btn text-md-right">
+	 			<button class="comment-submit" type="submit" name="reply_and_comment"><span class="fa fa-twitter"></span>Reply</button>
+	 			<button class="comment-submit" type="submit" name="comment_only">Add note</button>
+	 		</div>
+	 	<% end %>	 
+	 	<% end %>
+	 	<%= close_status_block(selected_tweet, current_status) %>
+	 	<%= show_work_log(selected_tweet.work_logs)%>
+	 	<%= resolve_status_block(selected_tweet) %>
+	</div>
+
+<% end %>
+</div>
+
+<script>
+	$("#work-progress form").on("keypress", function (e) {
+    if (e.keyCode == 13) {
+        return false;
+    }
+	});
+
+	$( "#work-progress form" ).submit(function( event ) {
+  	value = $(this).find('textarea[name="comment_text"]').val();
+  	if(value.length == 0){
+  		$(this).find('textarea[name="comment_text"]').css('border-color','#ff0000');
+  		event.preventDefault();
+  		return  false;
+  	}
+	});
+	$('#work-progress textarea[name="comment_text"]').on("click",function(){
+		$(this).css("border-color", "");
+	})
+</script>

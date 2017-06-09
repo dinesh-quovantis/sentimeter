@@ -1,0 +1,87 @@
+     <!--comparision block-->
+	<div class="container coparision-container">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="" class="link-btn"><span class="icon fa fa-chevron-left"></span><%= link_to'Back',:back %></a>
+      </div>
+    </div>
+    <div class="row coparision-block">
+      <div class="col-md-3">
+      <div class="user-profile-block own-profile-mod">
+        <div class="row">
+          <div class="col-xs-6 col-md-4">
+            <%= image_tag @user_1["profile_image_url"].gsub("_normal", ""), :class => "thumbnail rounded-circle float-xs-left profile-thumb"  %>
+          </div>
+          <div class="col-xs-6 col-md-8">
+            <div class="row">
+            <div class="col-xs-12 col-md-12 ">
+              <div class="profile-tweet-details-block">
+                <h1 class="profile-user-name"><%= @user_1["name"]  %></h1>
+                <span class="tweet-to">
+                  @<%= @user_1["screen_name"]  %>
+                </span>
+
+              </div>
+            </div>
+          </div>
+            <ul class="row fan-stats-block">
+            <l1 class="col-xs-6 column-grid fan-following">
+              <div class="numbers"><%= number_to_human(@user_1["statuses_count"]) %></div>
+              <div class="label">Tweets</div>
+            </l1>
+            <l1 class="col-xs-6 column-grid fan-following">
+              <div class="numbers"><%= number_to_human(@user_1["followers_count"]) %></div>
+              <div class="label">Followers</div>
+            </l1>
+          </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="col-md-1 text-xs-center">VS</div>
+      <div class="col-md-3">
+      <div class="user-profile-block other-profile-mod">
+        <div class="row">
+          <div class="col-xs-6 col-md-4">
+              <%= image_tag @user_2["profile_image_url"].gsub("_normal", ""), :class => "thumbnail rounded-circle float-xs-left profile-thumb"  %>
+          </div>
+          <div class="col-xs-6 col-md-8">
+              <div class="row">
+              <div class="col-xs-12 col-md-12 ">
+                <div class="profile-tweet-details-block">
+                  <h1 class="profile-user-name"><%= @user_2["name"]  %></h1>
+                  <span class="tweet-to">
+                    @<%= @user_2["screen_name"]  %>
+                  </span>
+
+                </div>
+              </div>
+            </div>
+              <ul class="row fan-stats-block">
+              <l1 class="col-xs-6 column-grid fan-following">
+                <div class="numbers"><%= number_to_human(@user_2["statuses_count"]) %></div>
+                <div class="label">Tweets</div>
+              </l1>
+              <l1 class="col-xs-6 column-grid fan-following">
+                <div class="numbers"><%= number_to_human(@user_2["followers_count"]) %></div>
+                <div class="label">Followers</div>
+              </l1>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="col-md-5 compare-chart-block">
+
+      <div class="row">
+      <%= bar_chart [
+          {name: @graph_data[0].keys[0], data: @graph_data[0].values[0]},
+          {name: @graph_data[1].keys[0], data: @graph_data[1].values[0]}
+        ], colors: ["#f5a623","#448ee2"] %>
+      </div>
+    </div>
+    </div>
+  </div>
+  <!--end comparision block-->
+
+

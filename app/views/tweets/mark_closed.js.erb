@@ -1,0 +1,4 @@
+$("#work-progress").html("<%= escape_javascript(render(:partial => 'timeline', :locals => { :selected_tweets => @selected_tweets, :user_profile_id => @user_profile_id }))%>");
+$($(".tweet-id-<%= @tweet_id %>").find(".tweet_status_buttons")[0]).html("<%= escape_javascript link_to('View History', view_progress_tweet_path(@request_selected_tweet, :user_profile_id =>  @user_profile_id),:remote=>true) %>");
+
+$("#closed_tweets_tab span").html($("#closed_tweets_tab span").html()+1);

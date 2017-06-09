@@ -1,0 +1,43 @@
+<div class="login-back">
+	<div class="container login-wrapper">
+		<div class="row">
+			<div class="col-md-4 text-xs-center quote-blocks">
+		    <h3 class="title">Analyze</h3>
+		    <span class="text">Public sentiments for any Twitter handle</span>
+		  </div>
+			<div class="col-md-4 text-xs-center quote-blocks">
+		    <h3 class="title">Compare</h3>
+		    <span class="text">Public sentiments of two Twitter handles</span>
+		  </div>
+			<div class="col-md-4 text-xs-center quote-blocks">
+		    <h3 class="title">Take Action</h3>
+		    <span class="text">To improve your sentiment score</span>
+		  </div>
+		</div>
+	   <div class="row">
+		   <div class="col-md-4 push-md-4 login-block container-login-block">
+		      <%= form_tag dashboard_path, :id => "fetch", class:"form-block", :method => :get do %>
+		       <label class="label">&#64;</label>
+ 					 <%= text_field_tag :handler, "", class:"input-field", placeholder:"politician,celebrity,government body" %>
+		       <input type="submit" class="at-redirect-btn" />
+					<% end%>
+				 <span class="trial-links">Try <%= link_to "@BsGovernor", dashboard_path(:handler => '@BsGovernor') %>, <%= link_to "@BarackObama", dashboard_path(:handler => '@BarackObama') %>
+				 <%#= link_to "@TheBricsPost", dashboard_path(:handler => '@TheBricsPost') %> <%#= link_to "@LeoDiCaprio", dashboard_path(:handler => '@LeoDiCaprio') %>
+				 </span>
+					
+					<div class="seprator">Or</div>
+
+					<a href="/auth/twitter" class="btn primary-btn hollow-btn follow-btn login-btn">
+					  <h6 class="login-with-twitter">Login with twitter <span class="fa fa-twitter icon"></span></h6>
+					  <p class="meta-text">to take or prioritize your actions</p>
+					</a>
+	      </div>
+	   </div>
+	</div>
+</div>
+
+
+
+
+
+

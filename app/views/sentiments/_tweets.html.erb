@@ -1,0 +1,109 @@
+<div class="row tweet-list">
+	
+	<% if feeds[:all].present? %>
+
+	<% feeds[:all].flatten.each do  |feed| %>
+
+
+	<% feed_user = feed["user"].presence || feed[:user] %>
+	
+	<div class="col-md-12 tweet-item tweet-<%= feed[:sentiment].to_s %> <%= @sentiments.include?(feed[:sentiment].to_s) ? '' : 'hide' %> tweet-id-<%= feed["id"].to_s%>">
+		<div class="row">
+			<div class="col-xs-6 col-md-4 col-lg-2">
+				<a href="#" class="thumbnail">
+					<% if feed_user.present? %>
+					<%= image_tag feed_user["profile_image_url"].gsub("_normal", ""), :class => "rounded-circle float-xs-left profile-thumb"  %>
+					<% else %>
+					<%= image_tag "default_image.jpeg", :class => "rounded-circle float-xs-left profile-thumb"  %>
+					<% end %>				
+				</a>
+			</div>
+		
+			<div class="col-xs-6 col-md-8 col-lg-10 tweet-inner-content">
+				<div class="row">
+					<div class="col-xs-12 col-md-12">
+						<div class="profile-tweet-details-block <%= feed[:sentiment].to_s %>-tweets">									
+							<h1 class="profile-user-name"><%#= feed_user["name"] %>
+										
+								<span class="tweet-to">
+									@<%#= feed_user["screen_name"] %>
+
+								</span>
+								<span class="tweet-time"> <%#= distance_of_time_in_words_to_now(feed["created_at"]) %></span>
+										
+							</h1>
+							<div class="profile-user-content">
+								<%= auto_link(feed["text"], :html => { :target => '_blank' }) %>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<ul class="row tweet-footer">
+					<l1 class="col-xs-3 column-grid tweet-links">
+						<span class="fa fa-retweet" title="Retweet"></span>
+						<span class="numbers"><%= feed["retweet_count"] || 0 %></span>
+					</l1>
+					<l1 class="col-xs-3 column-grid tweet-links">
+						<span class="fa fa-heart" title="Likes"></span>
+						<span class="numbers"><%= feed["favorite_count"] || 0 %></span>
+					</l1>
+					<li class="tweet_status_buttons col-xs-6 text-xs-right">
+
+						<%
+							@label = ''
+
+							if @in_progress_tweets.present? || @closed_tweets.present? 
+									@label = "View Progress" if  @in_progress_tweets[:all].map {|x| x["id"] }.include?(feed["id"]) 
+
+									@label = "View History" if @closed_tweets[:all].map {|x| x["id"] }.include?(feed["id"]) 
+
+							end
+						%>
+
+							<% if @label.present? %>
+								<% selected_tweet = SelectedTweet.find_by_tweet_id(feed["id"]) %>
+
+
+						<%#= link_to @label, view_progress_tweet_path(selected_tweet, :user_profile_id => @user_profile["id"].to_s),:remote=> true%>
+
+
+							<% end %>
+
+
+						
+
+						<% if @label.blank? && current_user.present? && @user_profile["id"].to_s == current_user.uid.to_s %>	
+						<%= form_tag(start_progress_tweets_path(), :method => :post, :remote => true) do %>
+						<%= hidden_field_tag :tweet_id,feed["id"] %>
+						<%= hidden_field_tag :message,feed["text"] %>
+						<%= hidden_field_tag :posted_by,"@"+feed_user["screen_name"] %>
+						<%= hidden_field_tag :image_url,feed_user["profile_image_url"] %>
+						<%= hidden_field_tag :name,feed_user["name"] %>
+						<%= hidden_field_tag :tweet_at,feed["created_at"] %>
+						<%= hidden_field_tag :user_profile_id, @user_profile["id"].to_s%>
+						<%= hidden_field_tag :feed, feed.to_json %>
+
+						<%= submit_tag "Take Action", :class=> 'link-btn'%>
+						<% end %>
+						<% end %>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+				
+				
+	<% end %>
+	
+	<% end %>
+
+</div>
+
+
+	
+	<div class="no-results" style="<%= feeds[:all].blank? ? '' : 'display:none' %>">
+			No tweets found.
+	</div>
+
+

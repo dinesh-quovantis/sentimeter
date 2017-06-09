@@ -1,0 +1,11 @@
+$("#work-progress").html("<%= escape_javascript(render(:partial => 'timeline', :locals => { :selected_tweets => @selected_tweets, :user_profile_id => @user_profile_id }))%>");
+
+<%label = SelectedTweet.find_by_tweet_id(@tweet_id).tweet_statuses.collect(&:status).include?(CLOSED) ? "View History": "View Progress"%>
+$($(".tweet-id-<%= @tweet_id %>").find(".tweet_status_buttons")[0]).html("<%= escape_javascript link_to(label, view_progress_tweet_path(@request_selected_tweet, :user_profile_id =>  @user_profile_id),:remote=>true) %>");
+$(".active-mod:not(.tweet-id-<%= @tweet_id %>)").removeClass('active-mod');
+
+
+$("#inprogress_tweets_tab span").html($("#inprogress_tweets_tab span").html()+1);
+
+<% @feed = JSON.parse(params[:feed]) %>
+$("#inprogress-tweets .tweet-list").prepend("<%= raw escape_javascript(render :partial => 'tweet',:locals => {:feed => @feed }) %>")

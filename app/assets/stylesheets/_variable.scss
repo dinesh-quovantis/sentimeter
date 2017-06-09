@@ -1,0 +1,237 @@
+$theme-color: #33b7c6;
+$circular_element : 50%;
+$default-text-color: #3e3e3e;
+$meta-text-color: #6f7e82;
+$header-bg: #33b7c6;
+$white: #ffffff;
+$positive-tweets : #7ed321;
+$negative-tweets : #ff0000;
+$neutral-tweets : #dddddd;
+
+
+//------importing fonts
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900');
+
+
+
+@mixin btn( $text-transform, $text-color, $border-color, $border-radius, $font-size) {
+    text-transform: $text-transform;
+    color: $text-color;
+    border:solid 1px $border-color;
+    border-radius: $border-radius;
+    font-size: $font-size;
+}
+%btn{
+  @include btn(uppercase, #33b7c6, #ccebf5 , 2px, 12px);
+}
+%transparent-btn{
+  background: transparent;
+}
+
+@mixin transition_all($property: all, $duration: .3s, $easing: linear) {
+ -webkit-transition: $property $duration $easing;
+  transition: $property $duration $easing;
+}
+%transition_all {
+ @include transition_all;
+}
+
+//flex
+   // FLEX-DIRECTION
+@mixin flex-row ($important: no){
+  @if $important == "important" {
+    -webkit-box-direction: normal !important;
+    -moz-box-direction: normal !important;
+    -webkit-box-orient: horizontal !important;
+    -moz-box-orient: horizontal !important;
+    -webkit-flex-direction: row !important;
+    -ms-flex-direction: row !important;
+    flex-direction: row !important;
+  } @else {
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+
+  }
+}
+// JUSTIFY-CONTENT
+@mixin flex_block($flow : row wrap, $content : space-between, $align-items : flex-start) {
+  display                 : -webkit-box;
+  display                 : -moz-box;
+  display                 : -ms-flexbox;
+  display                 : -webkit-flex;
+  display                 : flex;
+  -webkit-flex-flow       : $flow;
+  flex-flow               : $flow;
+  -webkit-justify-content : $content;
+  justify-content         : $content;
+  -webkit-align-items     : $align-items;
+  align-items             : $align-items;
+  -ms-flex-align          : $align-items;
+  @if $content == 'space-between' {
+    -webkit-box-pack : justify;
+  } @else if $content == 'flex-start' {
+    -webkit-box-pack : start;
+  } @else if $content == 'flex-end' {
+    -webkit-box-pack : end;
+  } @else if $content == 'center' {
+    -webkit-box-pack : center;
+  }
+
+  @if $align-items == 'stretch' {
+    -webkit-box-align : stretch;
+  } @else if $align-items == 'flex-start' {
+    -webkit-box-align : start;
+  } @else if $align-items == 'flex-end' {
+    -webkit-box-align : end;
+  } @else if $align-items == 'center' {
+    -webkit-box-align : center;
+  }
+}
+
+  %global_flex_block_e {
+    @include flex_block();
+  }
+
+  %global_flex_block_row_wrap_flex-start {
+    @include flex_block(row wrap, flex-start);
+  }
+
+  %global_flex_block_row_wrap_flex-end {
+    @include flex_block(row wrap, flex-end);
+  }
+
+  %global_flex_block_row_wrap_flex-end_center {
+    @include flex_block(row wrap, flex-end, center);
+  }
+
+  %global_flex_block_row_wrap_flex-start_center {
+    @include flex_block(row wrap, flex-start, center);
+  }
+
+  %global_flex_block_row_wrap_flex-start_stretch {
+    @include flex_block(row wrap, flex-start, stretch);
+  }
+
+  %global_flex_block_row_wrap_flex-end_stretch {
+    @include flex_block(row wrap, flex-end, stretch);
+  }
+
+
+  %global_flex_block_row_wrap_center {
+    @include flex_block(row wrap, center);
+  }
+
+  %global_flex_block_row_nowrap_flex-start {
+    @include flex_block(row nowrap, flex-start);
+  }
+
+  %global_flex_block_row_nowrap_flex_end_center {
+    @include flex_block(row nowrap, flex-end, center);
+  }
+
+  %global_flex_block_row_nowrap_flex_start {
+    @include flex_block(row nowrap, flex-start);
+  }
+
+  %global_flex_block_row_nowrap_flex_start_center {
+    @include flex_block(row nowrap, flex-start, center);
+  }
+
+  %global_flex_block_row_nowrap_flex-start_stretch {
+    @include flex_block(row nowrap, flex-start, stretch);
+  }
+
+  %global_flex_block_row_nowrap_flex-end {
+    @include flex_block(row nowrap, flex-end);
+  }
+
+  %global_flex_block_row_nowrap_center {
+    @include flex_block(row nowrap, center);
+  }
+
+  %global_flex_block_row_nowrap_space-between {
+    @include flex_block(row nowrap, space-between);
+  }
+
+  %global_flex_block_row_wrap_space_between_stretch {
+    @include flex_block(row wrap, space-between, stretch);
+  }
+
+  %global_flex_block_row_wrap_space_between {
+    @include flex_block(row wrap, space-between);
+  }
+
+  %global_flex_block_row_nowrap_space_between_stretch {
+    @include flex_block(row nowrap, space-between, stretch);
+  }
+
+  %global_flex_block_row_nowrap_space_between_flex_start {
+    @include flex_block(row nowrap, space-between, flex-start);
+  }
+
+  %global_flex_block_row_nowrap_space_between_flex_end {
+    @include flex_block(row nowrap, space-between, flex-end);
+  }
+
+  %global_flex_block_row_wrap_space_between_center {
+    @include flex_block(row wrap, space-between, center);
+  }
+
+  %global_flex_block_row_wrap_center_center {
+    @include flex_block(row wrap, center, center);
+  }
+
+  %global_flex_block_row_nowrap_space_between_center {
+    @include flex_block(row nowrap, space-between, center);
+  }
+
+  %global_flex_block_row_nowrap_space_around_center{
+    @include flex_block(row nowrap, space-around, center);
+  }
+
+
+  %global_flex_block_row_nowrap_center_center {
+    @include flex_block(row nowrap, center, center);
+  }
+
+  %global_flex_block_column_nowrap_flex-start {
+    @include flex_block(column nowrap, flex-start);
+  }
+
+  %global_flex_block_column_nowrap_flex-start_stretch {
+    @include flex_block(column nowrap, flex-start, stretch);
+  }
+
+  %global_flex_block_column_nowrap_flex-end_center {
+    @include flex_block(column nowrap, flex-end, center);
+  }
+
+  %global_flex_block_column_nowrap_center_center {
+    @include flex_block(column nowrap, center, center);
+  }
+
+  %global_flex_block_column_nowrap_center_flex-start {
+    @include flex_block(column nowrap, center, flex-start);
+  }
+
+  %global_flex_block_column_nowrap_flex-start_center {
+    @include flex_block(column nowrap,flex-start,  center);
+  }
+
+
+  %global_flex_block_column_nowrap_flex-end {
+    @include flex_block(column nowrap, flex-end);
+  }
+
+  %global_flex_block_column_nowrap_space_between_stretch {
+    @include flex_block(column nowrap, space-between, stretch);
+  }
+
+  %global_flex_block_column_nowrap_space_between_center {
+    @include flex_block(column nowrap, space-between, center);
+  }

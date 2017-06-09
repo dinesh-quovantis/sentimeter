@@ -1,0 +1,10 @@
+class HomeController < ApplicationController
+  
+  def index
+  	if current_user
+  		redirect_to dashboard_path(handler: current_user.screen_name)
+  	end
+  end
+  
+  
+end
